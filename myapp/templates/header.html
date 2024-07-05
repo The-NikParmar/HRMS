@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -16,7 +17,7 @@
         <link rel="stylesheet" href="{% static 'assets\css\bootstrap.min.css' %}">
 		
 		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="{% static 'assets\css\font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets\css\font-awesome.min.css'%}">
 		
 		<!-- Lineawesome CSS -->
         <link rel="stylesheet" href="{% static 'assets\css\line-awesome.min.css' %}">
@@ -578,29 +579,26 @@
                 </div>
             </div>
 			<!-- /Sidebar -->
-
-{% block admin_content %}
-
-{% endblock  %}
-		
+             {% block content %}
+             {% endblock %}
+        		
 		<!-- jQuery -->
-        <script data-cfasync="false" src="..\..\cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js"></script><script src="assets\js\jquery-3.2.1.min.js"></script>
+        <script data-cfasync="false" src="..\..\cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js"></script><script src="{% static 'assets\js\jquery-3.2.1.min.js' %}"></script>
 		
 		<!-- Bootstrap Core JS -->
-        <script src="assets\js\popper.min.js"></script>
-        <script src="assets\js\bootstrap.min.js"></script>
+        <script src="{% static 'assets\js\popper.min.js' %}"></script>
+        <script src="{% static 'assets\js\bootstrap.min.js' %}"></script>
 		
 		<!-- Slimscroll JS -->
-		<script src="assets\js\jquery.slimscroll.min.js"></script>
+		<script src="{% static 'assets\js\jquery.slimscroll.min.js' %}"></script>
 		
 		<!-- Chart JS -->
-		<script src="assets\plugins\morris\morris.min.js"></script>
-		<script src="assets\plugins\raphael\raphael.min.js"></script>
-		<script src="assets\js\chart.js"></script>
+		<script src="{% static 'assets\plugins\morris\morris.min.js' %}"></script>
+		<script src="{% static 'assets\plugins\raphael\raphael.min.js' %}"></script>
+		<script src="{% static 'assets\js\chart.js' %}"></script>
 		
 		<!-- Custom JS -->
-		<script src="assets\js\app.js"></script>
+		<script src="{% static 'assets\js\app.js' %}"></script>
 		
     </body>
 </html>
-
