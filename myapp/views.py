@@ -6,7 +6,7 @@ from .models import *
 import sweetify
 from datetime import datetime
 import random
-from django.http import JsonResponse
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -153,5 +153,28 @@ def add_employee(request):
 
 def profile(request):
     return render(request,"profile.html")
+
+def employee_list(request):
+    employee_id = request.GET.get('employee_id')
+    employee_name = request.GET.get('employee_name')
+    designation = request.GET.get('designation')
+
+    employees = Employees.objects.all()
+
+    if employee_id:
+        employees = employees.filter(employee_id__icontains=employee_id)
+    
+    if employee_name:
+        employees = employees.filter(
+            Q(first_name__icontains=employee_name) | Q(last_name__icontains=employee_name)
+        )
+
+    if designation:
+        employees = employees.filter(designation__icontains=designation)
+    
+    context = {
+        'employees': employees
+    }
+    return render(request, 'employees_list.html', context)
 
 
