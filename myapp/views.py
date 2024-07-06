@@ -5,6 +5,7 @@ from django.utils.html import strip_tags
 from .models import *
 import sweetify
 import random
+from django.utils.dateparse import parse_date
 
 # Create your views here.
 def home(request):
@@ -116,11 +117,34 @@ def index(request):
     return render(request,"index.html")
 
 
-def employees(request):
-    return render(request,"employees.html")
 
 def employees_list(request):
     return render(request,"employees_list.html")
+
+def add_employee(request):
+    if request.POST:
+        if request.POST['password']==request.POST['cpassword']:
+            employee = Employees.objects.create(
+                first_name = request.POST['first_name'],
+                last_name = request.POST['last_name'],
+                username = request.POST['username'],
+                email = request.POST['email'],
+                password = request.POST['password'],
+                joining_date = parse_date(request.POST['joining_date']),
+                employee_id = request.POST['employee_id'],
+                phone = request.POST['phone'],
+                company = request.POST['company'],
+                department = request.POST['department'],
+                designation = request.POST['designation'],
+            )
+            sweetify.success(request,"Employee Add Successfully..")
+            return render(request,"employees_list.html")
+        else:
+            sweetify.warning(request,"password and Conifrm pass can not match")
+            return render(request,"employees_list.html")
+    else:
+        return render(request,"employees_list.html")
+
     
 
 

@@ -28,6 +28,6 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('otp', views.otp, name='otp'),
     path('reset_password', views.reset_password, name='reset_password'),
-    path('employees', views.employees, name='employees'),
     path('employees_list', views.employees_list, name='employees_list'),
+    path('add_employee', views.add_employee, name='add_employee'),
 ]
