@@ -44,6 +44,10 @@ def login(request):
     else:
         return render(request,"login.html")
     
+def logout(request):
+    del request.session['email']
+    return redirect('login')
+    
 
 def mymailfunction(subject,template,to,context):
     template_str = template+'.html'
@@ -110,5 +114,13 @@ def reset_password(request):
 
 def index(request):
     return render(request,"index.html")
+
+
+def employees(request):
+    return render(request,"employees.html")
+
+def employees_list(request):
+    return render(request,"employees_list.html")
+    
 
 
