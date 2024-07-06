@@ -4,8 +4,9 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from .models import *
 import sweetify
+from datetime import datetime
 import random
-from django.utils.dateparse import parse_date
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
@@ -15,7 +16,7 @@ def register(request):
     if request.POST:
         try:
             User.objects.get(u_email=request.POST['email'])
-            sweetify.info(request,"Email is alredy Exists...",timer=2000)
+            sweetify.info(request,"Email is alredy Exists...")
             return redirect('register')
         except:
             if request.POST['pass1']==request.POST['pass2']:
@@ -119,32 +120,38 @@ def index(request):
 
 
 def employees_list(request):
-    return render(request,"employees_list.html")
+    employees = Employees.objects.all()
+    return render(request, 'employees_list.html', {'employees': employees})
 
 def add_employee(request):
     if request.POST:
         if request.POST['password']==request.POST['cpassword']:
+            joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d')
+                
+                # Create the employee object
             employee = Employees.objects.create(
-                first_name = request.POST['first_name'],
-                last_name = request.POST['last_name'],
-                username = request.POST['username'],
-                email = request.POST['email'],
-                password = request.POST['password'],
-                joining_date = parse_date(request.POST['joining_date']),
-                employee_id = request.POST['employee_id'],
-                phone = request.POST['phone'],
-                company = request.POST['company'],
-                department = request.POST['department'],
-                designation = request.POST['designation'],
-            )
+                    first_name=request.POST['first_name'],
+                    last_name=request.POST['last_name'],
+                    username=request.POST['username'],
+                    email=request.POST['email'],
+                    password=request.POST['password'],
+                    joining_date=joining_date,
+                    employee_id=request.POST['employee_id'],
+                    phone=request.POST['phone'],
+                    company=request.POST['company'],
+                    department=request.POST['department'],
+                    designation=request.POST['designation']
+                )
+                
             sweetify.success(request,"Employee Add Successfully..")
-            return render(request,"employees_list.html")
+            return render(request,"index.html")
         else:
             sweetify.warning(request,"password and Conifrm pass can not match")
             return render(request,"employees_list.html")
     else:
         return render(request,"employees_list.html")
 
-    
+def profile(request):
+    return render(request,"profile.html")
 
 
