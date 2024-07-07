@@ -76,6 +76,7 @@
 										</tr>
 									</thead>
 									<tbody>
+										{% if employees %}
 										{% for emp in employees %}
 											<tr>
 												<td>
@@ -99,7 +100,33 @@
 													</div>
 												</td>
 											</tr>
+
+											<!-- Delete Employee Modal -->
+											<div class="modal custom-modal fade" id="delete_employee" role="dialog">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-body">
+															<div class="form-header">
+																<h3>Delete Employee</h3>
+																<p>Are you sure want to delete?</p>
+															</div>
+															<div class="modal-btn delete-action">
+																<div class="row">
+																	<div class="col-6">
+																		<a href="{% url 'delete_employee' id=emp.id %}" class="btn btn-primary continue-btn">Delete</a>
+																	</div>
+																	<div class="col-6">
+																		<a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										<!-- /Delete Employee Modal -->
 										{% endfor %}
+										{% endif %}
 									</tbody>
 								</table>
 							</div>
@@ -180,9 +207,9 @@
 												<label class="col-form-label">Company</label>
 												<select class="select" name="company">
 													<option disabled selected>Select Company</option>
-													<option value="">Delta</option>
-													<option value="1">Infotech</option>
-													<option value="2">T C S</option>
+													<option value="Delta">Delta</option>
+													<option value="infotech">Infotech</option>
+													<option value="TCS">TCS</option>
 												</select>
 											</div>
 										</div>
@@ -191,10 +218,9 @@
 												<label>Department <span class="text-danger">*</span></label>
 												<select class="select" name="department">
 													<option disabled selected>Select Department</option>
-													<option>Web Development</option>
-													<option>Marketing</option>
-													<option>Backend Development</option>
-													<option>Frontend Development</option>
+													{% for department in departments %}
+													<option value="{{ department.id }}">{{ department.department }}</option>
+													{% endfor %}
 												</select>
 											</div>
 										</div>
@@ -203,10 +229,9 @@
 												<label>Designation <span class="text-danger">*</span></label>
 												<select class="select" name="designation">
 													<option disabled selected>Select Designation</option>
-													<option>Web Designer</option>
-													<option>Web Developer</option>
-													<option>Android Developer</option>
-													<option>Backend Developer</option>
+													{% for designation in designations %}
+													<option value="{{ designation.id }}">{{ designation.title }}</option>
+													{% endfor %}
 												</select>
 											</div>
 										</div>
@@ -219,6 +244,7 @@
 						</div>
 					</div>
 				</div>
+				
 				<!-- /Add Employee Modal -->
 				
 				<!-- Edit Employee Modal -->

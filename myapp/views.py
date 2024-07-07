@@ -128,31 +128,62 @@ def index(request):
 
 
 
+# def employees_list(request):
+#         employees = Employees.objects.all()
+#         print(employees)
+#         if request.POST:
+#             if request.POST['password']==request.POST['cpassword']:
+#                 employees = Employees.objects.create(
+#                     first_name = request.POST['first_name'],
+#                     last_name = request.POST['last_name'],
+#                     username = request.POST['username'],
+#                     email = request.POST['email'],
+#                     password = request.POST['password'],
+#                     joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
+#                     employee_id = request.POST['employee_id'],
+#                     phone = request.POST['phone'],
+#                     company = request.POST['company'],
+#                     department = request.POST['department'],
+#                     designation = request.POST['designation'],
+#                 )
+#                 sweetify.success(request,"Employee Add Successfully..")
+#                 return render(request, 'employees_list.html')
+#             else:
+#                 sweetify.warning(request,"password and Conifrm pass can not match")
+#                 return render(request, 'employees_list.html', {'employees': employees})
+#         else:
+#             return render(request, 'employees_list.html', {'employees': employees})
+
 def employees_list(request):
-        employees=Employees.objects.all()
-        print(employees)
-        if request.POST:
-            if request.POST['password']==request.POST['cpassword']:
-                employees = Employees.objects.create(
-                    first_name = request.POST['first_name'],
-                    last_name = request.POST['last_name'],
-                    username = request.POST['username'],
-                    email = request.POST['email'],
-                    password = request.POST['password'],
-                    joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
-                    employee_id = request.POST['employee_id'],
-                    phone = request.POST['phone'],
-                    company = request.POST['company'],
-                    department = request.POST['department'],
-                    designation = request.POST['designation'],
-                )
-                sweetify.success(request,"Employee Add Successfully..")
-                return render(request,"employees_list.html",{'employees':employees})
-            else:
-                sweetify.warning(request,"password and Conifrm pass can not match")
-                return render(request,"employees_list.html",{'employees':employees})
+    employees = Employees.objects.all()
+    departments = Department.objects.all()
+    designations = Designation.objects.all()
+    
+    if request.method == "POST":
+        if request.POST['password'] == request.POST['cpassword']:
+            Employees.objects.create(
+                first_name=request.POST['first_name'],
+                last_name=request.POST['last_name'],
+                username=request.POST['username'],
+                email=request.POST['email'],
+                password=request.POST['password'],
+                joining_date=datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
+                employee_id=request.POST['employee_id'],
+                phone=request.POST['phone'],
+                company=request.POST['company'],
+                department=Department.objects.get(id=request.POST['department']),
+                designation=Designation.objects.get(id=request.POST['designation']),
+            )
+            sweetify.success(request, "Employee Add Successfully..")
+            return render(request, 'employees_list.html', {'employees': employees, 'departments': departments, 'designations': designations})
         else:
-            return render(request,"employees_list.html",{'employees':employees})
+            sweetify.warning(request, "Password and Confirm password do not match")
+            return render(request, 'employees_list.html', {'employees': employees, 'departments': departments, 'designations': designations})
+    else:
+        return render(request, 'employees_list.html', {'employees': employees, 'departments': departments, 'designations': designations})
+
+
+
         
 def employees_serch(request):
     try:
@@ -195,3 +226,15 @@ def delete_employee(request,id):
     employees.delete()
     sweetify.success(request,"employee deleted successfully")
     return render(request,"employees_list.html",{'employee':employee})
+
+
+def departments(request):
+    department = Department.objects.all()
+    if request.POST:
+        dep = Department.objects.create(
+            department = request.POST['department']
+        )
+        sweetify.success(request,"Departments Add Successfully..")
+        return render(request,"departments.html")
+    else:
+        return render(request,"departments.html",{'department':department})
