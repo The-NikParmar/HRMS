@@ -238,3 +238,24 @@ def departments(request):
         return render(request,"departments.html")
     else:
         return render(request,"departments.html",{'department':department})
+    
+
+def designations(request):
+    designations = Designation.objects.all()
+    departments = Department.objects.all()
+    
+    if request.method == "POST":
+        designation = request.POST.get('designation')  # Use get() to safely retrieve POST data
+        department_id = request.POST.get('department')  # Use get() to safely retrieve POST data
+        
+        department = Department.objects.get(id=department_id)
+        
+        Designation.objects.create(
+            designation=designation,
+            department=department
+        )
+        
+        sweetify.success(request, "Designation Added Successfully..")
+        return redirect('designations')  # Redirect to the same page after adding
+    
+    return render(request, "designations.html", {'designations': designations, 'departments': departments})
