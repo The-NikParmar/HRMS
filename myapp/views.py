@@ -245,9 +245,7 @@ def delete_department(request, department_id):
     if request.method == 'POST':
         department.delete()
         sweetify.success(request,"Departments Delete Successfully..")
-        # Optionally redirect to a different page after delete
-        return render(request,"departments.html")  # Replace 'department_list' with your actual URL name
-    # Handle GET request if needed
+        return render(request,"departments.html")  
     return render(request,"departments.html")
 
 def update_department(request, department_id):
@@ -278,6 +276,5 @@ def designations(request):
         )
         
         sweetify.success(request, "Designation Added Successfully..")
-        return redirect('designations')  # Redirect to the same page after adding
-    
+        return redirect('designations')  
     return render(request, "designations.html", {'designations': designations, 'departments': departments})
