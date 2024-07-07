@@ -240,6 +240,28 @@ def departments(request):
         return render(request,"departments.html",{'department':department})
     
 
+def delete_department(request, department_id):
+    department = get_object_or_404(Department, pk=department_id)
+    if request.method == 'POST':
+        department.delete()
+        sweetify.success(request,"Departments Delete Successfully..")
+        # Optionally redirect to a different page after delete
+        return render(request,"departments.html")  # Replace 'department_list' with your actual URL name
+    # Handle GET request if needed
+    return render(request,"departments.html")
+
+def update_department(request, department_id):
+    department = get_object_or_404(Department, pk=department_id)
+    if request.method == 'POST':
+        department_name = request.POST.get('department')
+        department.department = department_name
+        department.save()
+        sweetify.success(request, "Department updated successfully.")
+        return redirect('departments')  
+    return render(request, 'departments.html') 
+
+    
+
 def designations(request):
     designations = Designation.objects.all()
     departments = Department.objects.all()
