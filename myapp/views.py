@@ -129,9 +129,9 @@ def index(request):
 
 
 def employees_list(request):
-    employee=Employees.objects.all()
-    print(employee)
-    if request.POST:
+        employees=Employees.objects.all()
+        print(employees)
+        if request.POST:
             if request.POST['password']==request.POST['cpassword']:
                 employees = Employees.objects.create(
                     first_name = request.POST['first_name'],
@@ -147,18 +147,15 @@ def employees_list(request):
                     designation = request.POST['designation'],
                 )
                 sweetify.success(request,"Employee Add Successfully..")
-                return render(request,"employees_list.html",{'employee':employee})
+                return render(request,"employees_list.html",{'employees':employees})
             else:
                 sweetify.warning(request,"password and Conifrm pass can not match")
-                return render(request,"employees_list.html",{'employee':employee})
-    else:
-            return render(request,"employees_list.html",{'employee':employee})
-    
-
-def profile(request):
-    return render(request,"profile.html")
-
-def employee_list(request):
+                return render(request,"employees_list.html",{'employees':employees})
+        else:
+            return render(request,"employees_list.html",{'employees':employees})
+        
+def employees_serch(request):
+    try:
         employee_id = request.GET.get('employee_id')
         employee_name = request.GET.get('employee_name')
         designation = request.GET.get('designation')
@@ -167,7 +164,7 @@ def employee_list(request):
 
         if employee_id:
             employees = employees.filter(employee_id__icontains=employee_id)
-        
+
         if employee_name:
             employees = employees.filter(
                 Q(first_name__icontains=employee_name) | Q(last_name__icontains=employee_name)
@@ -175,18 +172,26 @@ def employee_list(request):
 
         if designation:
             employees = employees.filter(designation__icontains=designation)
-        
+
         context = {
-            'employees': employees
+            'employees': employees,
         }
-        return render(request, 'employees_list.html', context)
-    
-def delete_employee(request, id):
-    if request.method == 'POST':
-        employee = get_object_or_404(Employees, id=id)
-        employee.delete()
-        sweetify.success(request, 'Employee deleted successfully.')
-        return redirect('index')
-    else:
-        sweetify.error(request, 'Invalid request method.')
-    return redirect('employees_list')
+    except:
+        # If any error occurs (e.g., user pressed search without entering any criteria),
+        # revert to showing all employees
+        employees = Employees.objects.all()
+        context = {
+            'employees': employees,
+        }
+
+    return render(request, 'employees_list.html', context)
+
+
+def delete_employee(request,id):
+    employee=Employees.objects.all()
+    print(employee)
+    employees = get_object_or_404(Employees, id=id)
+    print(employees)
+    employees.delete()
+    sweetify.success(request,"employee deleted successfully")
+    return render(request,"employees_list.html",{'employee':employee})
