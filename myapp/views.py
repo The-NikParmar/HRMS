@@ -267,8 +267,8 @@ def designations(request):
     departments = Department.objects.all()
     
     if request.method == "POST":
-        designation = request.POST.get('designation')  # Use get() to safely retrieve POST data
-        department_id = request.POST.get('department')  # Use get() to safely retrieve POST data
+        designation = request.POST.get('designation')  
+        department_id = request.POST.get('department')  
         
         department = Department.objects.get(id=department_id)
         
