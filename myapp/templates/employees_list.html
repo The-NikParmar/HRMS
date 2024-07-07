@@ -80,7 +80,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											{% for employee in employees %}
+											{% for employee in employee %}
 											<tr>
 												<td>
 													<h2 class="table-avatar">
@@ -129,7 +129,7 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<form method="post" action="{% url 'add_employee' %}">
+								<form method="post" action="{% url 'employees_list' %}">
 									{% csrf_token %}
 									<div class="row">
 										<div class="col-sm-6">
@@ -350,10 +350,8 @@
 				<!-- /Edit Employee Modal -->
 				
 				<!-- Delete Employee Modal -->
-				{% for employee in employees %}
-    	
-            {% comment %} <button data-toggle="modal" data-target="#delete_employee_{{ employee.id }}">Delete</button> {% endcomment %}
-            <div class="modal custom-modal fade" id="delete_employee_{{ employee.id }}" role="dialog">
+				{% for employee in employee %}
+    	        <div class="modal custom-modal fade" id="delete_employee_{{ employee.id }}" role="dialog">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -378,8 +376,7 @@
                     </div>
                 </div>
             </div>
-        </td>
-    </tr>
+        
 {% endfor %}
 
 				

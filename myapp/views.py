@@ -129,36 +129,31 @@ def index(request):
 
 
 def employees_list(request):
-    employees = Employees.objects.all()
-    return render(request, 'employees_list.html', {'employees': employees})
-
-def add_employee(request):
+    employee=Employees.objects.all()
+    print(employee)
     if request.POST:
-        if request.POST['password']==request.POST['cpassword']:
-            joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d')
-                
-                # Create the employee object
-            employee = Employees.objects.create(
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
-                    username=request.POST['username'],
-                    email=request.POST['email'],
-                    password=request.POST['password'],
-                    joining_date=joining_date,
-                    employee_id=request.POST['employee_id'],
-                    phone=request.POST['phone'],
-                    company=request.POST['company'],
-                    department=request.POST['department'],
-                    designation=request.POST['designation']
+            if request.POST['password']==request.POST['cpassword']:
+                employees = Employees.objects.create(
+                    first_name = request.POST['first_name'],
+                    last_name = request.POST['last_name'],
+                    username = request.POST['username'],
+                    email = request.POST['email'],
+                    password = request.POST['password'],
+                    joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
+                    employee_id = request.POST['employee_id'],
+                    phone = request.POST['phone'],
+                    company = request.POST['company'],
+                    department = request.POST['department'],
+                    designation = request.POST['designation'],
                 )
-                
-            sweetify.success(request,"Employee Add Successfully..")
-            return render(request,"index.html")
-        else:
-            sweetify.warning(request,"password and Conifrm pass can not match")
-            return render(request,"employees_list.html")
+                sweetify.success(request,"Employee Add Successfully..")
+                return render(request,"employees_list.html",{'employee':employee})
+            else:
+                sweetify.warning(request,"password and Conifrm pass can not match")
+                return render(request,"employees_list.html",{'employee':employee})
     else:
-        return render(request,"employees_list.html")
+            return render(request,"employees_list.html",{'employee':employee})
+    
 
 def profile(request):
     return render(request,"profile.html")
