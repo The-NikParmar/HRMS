@@ -60,7 +60,7 @@
 								<div class="card-body">
 									<span class="dash-widget-icon"><i class="fa fa-user" style="padding-top: 0.8rem;" ></i></span>
 									<div class="dash-widget-info">
-										<h3>218</h3>
+										<h3> {{ emp }}</h3>
 										<span>Employees</span>
 									</div>
 								</div>
@@ -68,29 +68,7 @@
 						</div>
 					</div>
 					
-					<div class="row">
-						<div class="col-md-12">
-							<div class="row">
-								<div class="col-md-6 text-center">
-									<div class="card">
-										<div class="card-body">
-											<h3 class="card-title">Total Revenue</h3>
-											<div id="bar-charts"></div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-6 text-center">
-									<div class="card">
-										<div class="card-body">
-											<h3 class="card-title">Sales Overview</h3>
-											<div id="line-charts"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
+				
 					<div class="row">
 						<div class="col-md-12">
 							<div class="card-group m-b-30">
@@ -735,7 +713,7 @@
 			
         </div>
 		<!-- /Main Wrapper -->
-		
+{% comment %} 		
 		<!-- jQuery -->
         <script data-cfasync="false" src="{% static '..\..\cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js '%}"></script><script src="{% static 'assets\js\jquery-3.2.1.min.js '%}"></script>
 		
@@ -752,7 +730,7 @@
 		<script src="{% static 'assets\js\chart.js '%}"></script>
 		
 		<!-- Custom JS -->
-		<script src="{% static 'assets\js\app.js '%}"></script>
+		<script src="{% static 'assets\js\app.js '%}"></script> {% endcomment %}
 		
     </body>
 </html>

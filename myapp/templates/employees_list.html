@@ -1,6 +1,9 @@
 ﻿﻿{% extends "header.html" %}
 {% load static %}
 {% block content %}
+
+
+
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
 			
@@ -99,7 +102,7 @@
 														<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 														<div class="dropdown-menu dropdown-menu-right">
 															<a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-															<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+															<a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee_{{ employee.id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 														</div>
 													</div>
 												</td>
@@ -115,7 +118,8 @@
 				<!-- /Page Content -->
 				
 				<!-- Add Employee Modal -->
-				<div id="add_employee" class="modal custom-modal fade" role="dialog">
+
+ 			<div id="add_employee" class="modal custom-modal fade" role="dialog">
 					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -225,8 +229,12 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> 
+
+
+
 				<!-- /Add Employee Modal -->
+				
 				<!-- /Add Employee Modal -->
 				
 				<!-- Edit Employee Modal -->
@@ -342,28 +350,41 @@
 				<!-- /Edit Employee Modal -->
 				
 				<!-- Delete Employee Modal -->
-				<div class="modal custom-modal fade" id="delete_employee" role="dialog">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-body">
-								<div class="form-header">
-									<h3>Delete Employee</h3>
-									<p>Are you sure want to delete?</p>
-								</div>
-								<div class="modal-btn delete-action">
-									<div class="row">
-										<div class="col-6">
-											<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-										</div>
-										<div class="col-6">
-											<a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				{% for employee in employees %}
+    	
+            {% comment %} <button data-toggle="modal" data-target="#delete_employee_{{ employee.id }}">Delete</button> {% endcomment %}
+            <div class="modal custom-modal fade" id="delete_employee_{{ employee.id }}" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="form-header">
+                                <h3>Delete Employee</h3>
+                                <p>Are you sure you want to delete?</p>
+                            </div>
+                            <div class="modal-btn delete-action">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <form method="POST" action="{% url 'delete_employee' employee.id %}">
+                                            {% csrf_token %}
+                                            <a ><button class="btn btn-primary cancel-btn"  data-toggle="modal"data-target="#delete_employee_{{ employee.id }}">Delete</button></a>
+                                        </form>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+{% endfor %}
+
+				
+				
+				
 				<!-- /Delete Employee Modal -->
 				
             </div>
@@ -372,9 +393,8 @@
         </div>
 		<!-- /Main Wrapper -->
 
-		<!-- /Main Wrapper -->
-		<!--script-->
 		<script>
+
 			document.addEventListener('DOMContentLoaded', function() {
 				function generateEmployeeId() {
 					return 'EMP' + Math.floor(Math.random() * 10000);

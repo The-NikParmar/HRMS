@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -6,11 +7,14 @@ from .models import *
 import sweetify
 from datetime import datetime
 import random
+from django.http import JsonResponse
 from django.db.models import Q
 
 # Create your views here.
 def home(request):
     return render(request,"home.html")
+
+
 
 def register(request):
     if request.POST:
@@ -115,7 +119,12 @@ def reset_password(request):
           return render(request,"reset_password.html")
 
 def index(request):
-    return render(request,"index.html")
+    emp = Employees.objects.count()
+    context={
+        'emp':emp
+    }
+    
+    return render(request,"index.html",context)
 
 
 
@@ -155,26 +164,34 @@ def profile(request):
     return render(request,"profile.html")
 
 def employee_list(request):
-    employee_id = request.GET.get('employee_id')
-    employee_name = request.GET.get('employee_name')
-    designation = request.GET.get('designation')
+        employee_id = request.GET.get('employee_id')
+        employee_name = request.GET.get('employee_name')
+        designation = request.GET.get('designation')
 
-    employees = Employees.objects.all()
+        employees = Employees.objects.all()
 
-    if employee_id:
-        employees = employees.filter(employee_id__icontains=employee_id)
+        if employee_id:
+            employees = employees.filter(employee_id__icontains=employee_id)
+        
+        if employee_name:
+            employees = employees.filter(
+                Q(first_name__icontains=employee_name) | Q(last_name__icontains=employee_name)
+            )
+
+        if designation:
+            employees = employees.filter(designation__icontains=designation)
+        
+        context = {
+            'employees': employees
+        }
+        return render(request, 'employees_list.html', context)
     
-    if employee_name:
-        employees = employees.filter(
-            Q(first_name__icontains=employee_name) | Q(last_name__icontains=employee_name)
-        )
-
-    if designation:
-        employees = employees.filter(designation__icontains=designation)
-    
-    context = {
-        'employees': employees
-    }
-    return render(request, 'employees_list.html', context)
-
-
+def delete_employee(request, id):
+    if request.method == 'POST':
+        employee = get_object_or_404(Employees, id=id)
+        employee.delete()
+        sweetify.success(request, 'Employee deleted successfully.')
+        return redirect('index')
+    else:
+        sweetify.error(request, 'Invalid request method.')
+    return redirect('employees_list')

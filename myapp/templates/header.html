@@ -12,7 +12,7 @@
 
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets\img\favicon.png'%}">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets\img\favicon.png' %}">
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'assets\css\bootstrap.min.css' %}">
@@ -37,6 +37,7 @@
 			<script src="assets/js/html5shiv.min.js' %}"></script>
 			<script src="assets/js/respond.min.js' %}"></script>
 		<![endif]-->
+		
     </head>
     <body>
 		<!-- Main Wrapper -->
@@ -47,7 +48,7 @@
 			
 				<!-- Logo -->
                 <div class="header-left" >
-                    <a href="index.html" class="logo" style="padding-top: 0.5rem;">
+                    <a href="{% url "index" %}" class="logo" style="padding-top: 0.5rem;">
 						<img src="{% static 'assets\img\logo.png '%}" width="40" height="40" alt="" >
 					</a>
                 </div>
@@ -86,27 +87,8 @@
 					</li>
 					<!-- /Search -->
 				
-					<!-- Flag -->
-					<li class="nav-item dropdown has-arrow flag-nav">
-						<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button">
-							<img src="{% static 'assets\img\flags\us.png' %}" alt="" height="20"> <span>English</span>
-						</a>
-						<div class="dropdown-menu dropdown-menu-right">
-							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="{% static 'assets\img\flags\us.png' %}" alt="" height="16"> English
-							</a>
-							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="{% static 'assets\img\flags\fr.png' %}" alt="" height="16"> French
-							</a>
-							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="{% static 'assets\img\flags\es.png' %}" alt="" height="16"> Spanish
-							</a>
-							<a href="javascript:void(0);" class="dropdown-item">
-								<img src="{% static 'assets\img\flags\de.png' %}" alt="" height="16"> German
-							</a>
-						</div>
-					</li>
-					<!-- /Flag -->
+					
+				
 					
 					<!-- Notifications -->
 					<li class="nav-item dropdown">
@@ -340,7 +322,7 @@
 							<li class="submenu">
 								<a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="index.html">Admin Dashboard</a></li>
+									<li><a href="{% url "index" %}">Admin Dashboard</a></li>
 									<li><a href="employee-dashboard.html">Employee Dashboard</a></li>
 								</ul>
 							</li>
@@ -588,9 +570,13 @@
 
              {% endblock %}
         		
+
+		<script data-cfasync="false" src="{% static '..\..\cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js '%}"></script><script src="{% static 'assets\js\jquery-3.2.1.min.js '%}"></script>
+
 		
 		<!-- jQuery -->
-        <script src="{% static 'assets\js\jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'assets/js/jquery-3.2.1.min.js' %}"></script>
+		
 		
 		<!-- Bootstrap Core JS -->
         <script src="{% static 'assets\js\popper.min.js' %}"></script>
@@ -611,5 +597,6 @@
 		
     </body>
 </html>
+
 {% load sweetify %}
 {% sweetify %}
