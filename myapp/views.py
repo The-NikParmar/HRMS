@@ -225,7 +225,23 @@ def delete_employee(request,id):
     print(employees)
     employees.delete()
     sweetify.success(request,"employee deleted successfully")
-    return render(request,"employees_list.html",{'employee':employee})
+    return redirect('employees_list')
+
+
+def update_employee(request, id):
+    employee = get_object_or_404(Employees, pk=id)
+    if request.method == 'POST':
+        employee.first_name = request.POST.get('first_name')
+        employee.last_name = request.POST.get('last_name')
+        employee.email = request.POST.get('email')
+        department_id = request.POST.get('department')
+        designation_id = request.POST.get('designation')
+        employee.department = Department.objects.get(id=department_id)
+        employee.designation = Designation.objects.get(id=designation_id)
+        employee.save()
+        sweetify.success(request, "Employee Updated Successfully")
+        return redirect('employees_list')
+    return render(request, 'employees_list.html')
 
 
 def departments(request):
@@ -235,18 +251,16 @@ def departments(request):
             department = request.POST['department']
         )
         sweetify.success(request,"Departments Add Successfully..")
-        return render(request,"departments.html")
+        return render(request,"departments.html",{'department':department})
     else:
         return render(request,"departments.html",{'department':department})
     
 
-def delete_department(request, department_id):
-    department = get_object_or_404(Department, pk=department_id)
-    if request.method == 'POST':
-        department.delete()
-        sweetify.success(request,"Departments Delete Successfully..")
-        return render(request,"departments.html")  
-    return render(request,"departments.html")
+def departments_delete(request, id):
+    department_instance = get_object_or_404(Department, pk=id)
+    department_instance.delete()
+    sweetify.success(request, "Department deleted successfully.")
+    return redirect('departments')
 
 def update_department(request, department_id):
     department = get_object_or_404(Department, pk=department_id)
@@ -258,7 +272,6 @@ def update_department(request, department_id):
         return redirect('departments')  
     return render(request, 'departments.html') 
 
-    
 
 def designations(request):
     designations = Designation.objects.all()
@@ -278,3 +291,26 @@ def designations(request):
         sweetify.success(request, "Designation Added Successfully..")
         return redirect('designations')  
     return render(request, "designations.html", {'designations': designations, 'departments': departments})
+
+def designations_update(request, id):
+    designations = get_object_or_404(Designation, pk=id)
+    if request.method == 'POST':
+        designation = request.POST.get('designation')
+        department_id = request.POST.get('department')
+        department = Department.objects.get(id=department_id)
+        
+        designations.designation = designation
+        designations.department = department
+        designations.save()
+        
+        sweetify.success(request, "Designation updated successfully.")
+        return redirect('designations')
+    return render(request, 'designations.html')
+
+    
+def designations_delete(request, id):
+    designation_instance = get_object_or_404(Designation, pk=id)
+    designation_instance.delete()
+    
+    sweetify.success(request, "Designation deleted successfully.")
+    return redirect('designations')

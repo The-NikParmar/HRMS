@@ -30,13 +30,18 @@ urlpatterns = [
     path('employees_list', views.employees_list, name='employees_list'),
     path('employees_serch', views.employees_serch, name='employees_serch'),
     path('delete_employee/ <int:id>/', views.delete_employee, name='delete_employee'),
+    path('update_employee/<int:id>', views.update_employee, name='update_employee'),
+
 
     path('departments', views.departments, name='departments'),
-    path('departments/<int:department_id>/delete/', views.delete_department, name='delete_department'),
+    path('departments_delete/<int:id>', views.departments_delete, name='delete_department'),  # Added this line
     path('departments/<int:department_id>/update/', views.update_department, name='update_department'),
 
 
     path('designations', views.designations, name='designations'),
+    path('designations_update/<int:id>', views.designations_update, name='designations_update'),
+    path('designations_delete/<int:id>', views.designations_delete, name='designations_delete'),  # Add this line
+
 
 
 ]

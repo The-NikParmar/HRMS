@@ -114,24 +114,22 @@
     <!-- /Edit Department Modal -->
 
     <!-- Delete Department Modal -->
+    <!-- Delete Department Modal -->
     <div class="modal custom-modal fade" id="delete_department_{{ i.id }}" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="form-header">
                         <h3>Delete Department</h3>
-                        <p>Are you sure want to delete {{ i.department }}?</p>
+                        <p>Are you sure you want to delete {{ i.department }}?</p>
                     </div>
                     <div class="modal-btn delete-action">
                         <div class="row">
                             <div class="col-6">
-                                <form action="{% url 'delete_department' i.id %}" method="post">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary continue-btn">Delete</button>
-                                </form>
+                                <a href="{% url 'delete_department' i.id %}" class="btn btn-primary continue-btn">Delete</a>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-primary cancel-btn" data-dismiss="modal">Cancel</button>
+                                <a href="javascript:void(0);" data-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
                             </div>
                         </div>
                     </div>
@@ -139,6 +137,7 @@
             </div>
         </div>
     </div>
+    <!-- /Delete Department Modal -->
     <!-- /Delete Department Modal -->
     {% endfor %}
 </div>
