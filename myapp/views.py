@@ -128,32 +128,6 @@ def index(request):
 
 
 
-# def employees_list(request):
-#         employees = Employees.objects.all()
-#         print(employees)
-#         if request.POST:
-#             if request.POST['password']==request.POST['cpassword']:
-#                 employees = Employees.objects.create(
-#                     first_name = request.POST['first_name'],
-#                     last_name = request.POST['last_name'],
-#                     username = request.POST['username'],
-#                     email = request.POST['email'],
-#                     password = request.POST['password'],
-#                     joining_date = datetime.strptime(request.POST['joining_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
-#                     employee_id = request.POST['employee_id'],
-#                     phone = request.POST['phone'],
-#                     company = request.POST['company'],
-#                     department = request.POST['department'],
-#                     designation = request.POST['designation'],
-#                 )
-#                 sweetify.success(request,"Employee Add Successfully..")
-#                 return render(request, 'employees_list.html')
-#             else:
-#                 sweetify.warning(request,"password and Conifrm pass can not match")
-#                 return render(request, 'employees_list.html', {'employees': employees})
-#         else:
-#             return render(request, 'employees_list.html', {'employees': employees})
-
 def employees_list(request):
     employees = Employees.objects.all()
     departments = Department.objects.all()
@@ -184,38 +158,27 @@ def employees_list(request):
 
 
 
-        
-def employees_serch(request):
-    try:
-        employee_id = request.GET.get('employee_id')
-        employee_name = request.GET.get('employee_name')
-        designation = request.GET.get('designation')
+def employees_search(request):
+    employees = Employees.objects.all()
+    designations = Designation.objects.all()
 
-        employees = Employees.objects.all()
+    employee_id = request.GET.get('employee_id')
+    employee_name = request.GET.get('employee_name')
+    designation_id = request.GET.get('designation')
 
-        if employee_id:
-            employees = employees.filter(employee_id__icontains=employee_id)
+    if employee_id:
+        employees = employees.filter(employee_id__icontains=employee_id)
+    if employee_name:
+        employees = employees.filter(first_name__icontains=employee_name) | employees.filter(last_name__icontains=employee_name)
+    if designation_id:
+        employees = employees.filter(designation_id=designation_id)
 
-        if employee_name:
-            employees = employees.filter(
-                Q(first_name__icontains=employee_name) | Q(last_name__icontains=employee_name)
-            )
-
-        if designation:
-            employees = employees.filter(designation__icontains=designation)
-
-        context = {
-            'employees': employees,
-        }
-    except:
-        # If any error occurs (e.g., user pressed search without entering any criteria),
-        # revert to showing all employees
-        employees = Employees.objects.all()
-        context = {
-            'employees': employees,
-        }
-
+    context = {
+        'employees': employees,
+        'designations': designations,
+    }
     return render(request, 'employees_list.html', context)
+
 
 
 def delete_employee(request,id):
@@ -314,3 +277,6 @@ def designations_delete(request, id):
     
     sweetify.success(request, "Designation deleted successfully.")
     return redirect('designations')
+
+def profile(request):
+    return render(request,"profile.html")

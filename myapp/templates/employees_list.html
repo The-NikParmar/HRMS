@@ -27,37 +27,36 @@
 					<!-- /Page Header -->
 					
 					<!-- Search Filter -->
-					<form id="search-form" method="GET" action="{% url 'employees_serch' %}">
-						<div class="row filter-row">
-							<div class="col-sm-6 col-md-3">
-								<div class="form-group form-focus">
-									<input type="text" class="form-control floating" name="employee_id" id="employee_id1">
-									<label class="focus-label">Employee ID</label>
+						<form id="search-form" method="GET" action="{% url 'employees_search' %}">
+							<div class="row filter-row">
+								<div class="col-sm-6 col-md-3">
+									<div class="form-group form-focus">
+										<input type="text" class="form-control floating" name="employee_id" id="employee_id1" value="{{ request.GET.employee_id }}">
+										<label class="focus-label">Employee ID</label>
+									</div>
+								</div>
+								<div class="col-sm-6 col-md-3">
+									<div class="form-group form-focus">
+										<input type="text" class="form-control floating" name="employee_name" id="employee_name" value="{{ request.GET.employee_name }}">
+										<label class="focus-label">Employee Name</label>
+									</div>
+								</div>
+								<div class="col-sm-6 col-md-3">
+									<div class="form-group form-focus select-focus">
+										<select class="select floating" name="designation" id="designation">
+											<option disabled selected>Select Designation</option>
+											{% for designation in designations %}
+												<option value="{{ designation.id }}" {% if request.GET.designation == designation.id %} selected {% endif %}>{{ designation.designation }}</option>
+											{% endfor %}
+										</select>
+										<label class="focus-label">Designation</label>
+									</div>
+								</div>
+								<div class="col-sm-6 col-md-3">
+									<button type="submit" class="btn btn-success btn-block">Search</button>
 								</div>
 							</div>
-							<div class="col-sm-6 col-md-3">
-								<div class="form-group form-focus">
-									<input type="text" class="form-control floating" name="employee_name" id="employee_name">
-									<label class="focus-label">Employee Name</label>
-								</div>
-							</div>
-							<div class="col-sm-6 col-md-3">
-								<div class="form-group form-focus select-focus">
-									<select class="select floating" name="designation" id="designation">
-										<option disabled selected>Select Designation</option>
-										<option>Web Designer</option>
-										<option>Web Developer</option>
-										<option>Android Developer</option>  
-										<option>Backend Developer</option>
-									</select>
-									<label class="focus-label">Designation</label>
-								</div>
-							</div>
-							<div class="col-sm-6 col-md-3">
-								<button type="submit" class="btn btn-success btn-block"> Search </button>
-							</div>
-						</div>
-					</form>
+						</form>
 					<!-- /Search Filter -->
 					
 					<div class="row">
@@ -81,8 +80,8 @@
 											<tr>
 												<td>
 													<h2 class="table-avatar">
-														<a href="profile.html" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-02.jpg' %}"></a>
-														<a href="profile.html">{{ emp.first_name }} {{ emp.last_name }}<span>{{ emp.designation }}</span></a>
+														<a href="{% url "profile" %}" class="avatar"><img alt="" src="{% static 'assets/img/profiles/avatar-02.jpg' %}"></a>
+														<a href="{% url "profile" %}">{{ emp.first_name }} {{ emp.last_name }}<span>{{ emp.designation }}</span></a>
 													</h2>
 												</td>
 												<td>{{ emp.employee_id }}</td>
