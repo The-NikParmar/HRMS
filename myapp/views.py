@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -8,12 +7,10 @@ import sweetify
 from datetime import datetime
 import random
 from django.http import JsonResponse
-from django.db.models import Q
 
 # Create your views here.
 def home(request):
     return render(request,"home.html")
-
 
 
 def register(request):

@@ -57,7 +57,7 @@
 								</div>
 							</div>
 						</form>
-					<!-- /Search Filter -->
+			<!-- /Search Filter -->
 					
 					<div class="row">
 						<div class="col-md-12">
@@ -183,9 +183,17 @@
 										<!-- /Edit Employee Modal -->
 										{% endfor %}
 										{% endif %}
+										
 									</tbody>
 								</table>
 							</div>
+							<!-- No Employees Found Message -->
+							{% if not employees %}
+							<div class="alert alert-danger" role="alert">
+								No employees found.
+							</div>
+							{% endif %}
+							
 						</div>
 					</div>
 				</div>
