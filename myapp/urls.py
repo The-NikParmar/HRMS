@@ -27,11 +27,12 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('otp', views.otp, name='otp'),
     path('reset_password', views.reset_password, name='reset_password'),
+
+    path('employee_dashboard', views.employee_dashboard, name='employee_dashboard'),
     path('employees_list', views.employees_list, name='employees_list'),
     path('employees_search', views.employees_search, name='employees_search'),
     path('delete_employee/ <int:id>/', views.delete_employee, name='delete_employee'),
     path('update_employee/<int:id>', views.update_employee, name='update_employee'),
-
     path('profile', views.profile, name='profile'),
 
 

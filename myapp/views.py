@@ -6,7 +6,8 @@ from .models import *
 import sweetify
 from datetime import datetime
 import random
-from django.http import JsonResponse
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import logout as auth_logout
 
 # Create your views here.
 def home(request):
@@ -35,21 +36,60 @@ def register(request):
     return render(request,"register.html")
 
 def login(request):
-    if request.POST:
-        user = User.objects.get(u_email = request.POST['email'])
-        if user.password == request.POST['password']:
-            request.session['email'] = user.u_email
-            sweetify.success(request,"Login Successfully.....")
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print("Received POST request with username:", username)
+        print("Received POST request with password:", password)
+
+        # First try to authenticate with Employees model
+        try:
+            emp = Employees.objects.get(username=username)
+            print("Employee found:", emp)
+            if emp.password == password:
+                print("Password matches for employee.")
+                request.session['username'] = emp.username
+                sweetify.success(request, "Login Successfully")
+                return render(request, "employee_dashboard.html")
+            else:
+                print("Password does not match for employee.")
+                sweetify.error(request, "Password Does Not Match")
+                return render(request, "login.html")
+            
+        except Employees.DoesNotExist:
+            print("Employee does not exist.")
+            sweetify.error(request, "Email Does Not Exist")
+
+        # Fall back to Django's built-in authentication
+        user = authenticate(request, username=username, password=password)
+        print("================>",user)
+        if user is not None:
+            print("User authenticated successfully.")
+            auth_login(request, user) 
+            request.session['username'] = username
+            sweetify.success(request, "Login Successfully")
             return redirect('index')
         else:
-            sweetify.error(request,"Criditional Wrong.....")
-            return redirect('login')
+            print("Django authentication failed.")
+            sweetify.error(request, "Password Does Not Match")
+            return render(request, 'login.html', {'error': 'Invalid Username and Password'})
     else:
-        return render(request,"login.html")
+        print("Rendering login page.")
+        return render(request, 'login.html')
     
 def logout(request):
-    del request.session['email']
-    return redirect('login')
+    try:
+        print("Attempting to delete username from session...")
+        del request.session['username']
+        sweetify.success(request, "Logout Successfully")
+        return render(request, "login.html")
+    except KeyError:
+        print("Username not found in session.")
+    
+    print("Logging out user using Django's auth_logout...")
+    auth_logout(request)
+    sweetify.success(request, "Logout Successfully")
+    return render(request, "login.html")
     
 
 def mymailfunction(subject,template,to,context):
@@ -64,7 +104,7 @@ def forgot_password(request):
     if request.method == 'POST':
         
         try:
-            user = User.objects.get(u_email=request.POST['email'])
+            employees=Employees.objects.get(email=request.POST['email'])
             email = request.POST['email']
             otp = random.randint(1001, 9999)
             request.session['email'] = email
@@ -74,7 +114,7 @@ def forgot_password(request):
             mymailfunction("Welcome to Forget Password", "etemplate", email, {'email': email, "otp": otp})
 
             return render(request, "otp.html")
-        except User.DoesNotExist:
+        except Employees.DoesNotExist:
             sweetify.warning(request, "Email does not exist!")
             return render(request, "forgot_password.html")
     else:
@@ -99,10 +139,10 @@ def otp(request):
     
 def reset_password(request):   
     if request.POST:
-            user= User.objects.get(u_email=request.session['email'])
+            employees= Employees.objects.get(email=request.session['email'])
             if request.POST['npassword']==request.POST['ncpassword']:
-                user.password=request.POST['ncpassword']
-                user.save()
+                employees.password=request.POST['ncpassword']
+                employees.save()
                 msg="Password Reset successfuly..." 
                 sweetify.success(request,msg)
                 del request.session['email']
@@ -122,6 +162,10 @@ def index(request):
     }
     
     return render(request,"index.html",context)
+
+
+def employee_dashboard(reuqest):
+    return render(reuqest,"employee_dashboard.html")
 
 
 
