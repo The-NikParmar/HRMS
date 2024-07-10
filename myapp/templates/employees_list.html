@@ -8,7 +8,7 @@
 				
 				<!-- Page Content -->
 				<div class="content container-fluid">
-				
+					
 					<!-- Page Header -->
 					<div class="page-header">
 						<div class="row align-items-center">
@@ -94,14 +94,14 @@
 														<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 														<div class="dropdown-menu dropdown-menu-right">
 															<a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit_employee_{{ emp.id }}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-															<a class="dropdown-item" href="{% url 'delete_employee' id=emp.id %}" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+															<a class="dropdown-item" href="{% url 'delete_employee' id=emp.id %}" data-toggle="modal" data-target="#delete_employee_{{ emp.id }}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 														</div>
 													</div>
 												</td>
 											</tr>
 
 											<!-- Delete Employee Modal -->
-											<div class="modal custom-modal fade" id="delete_employee" role="dialog">
+											<div class="modal custom-modal fade" id="delete_employee_{{ emp.id }}" role="dialog">
 												<div class="modal-dialog modal-dialog-centered">
 													<div class="modal-content">
 														<div class="modal-body">

@@ -33,8 +33,11 @@ urlpatterns = [
     path('employees_search', views.employees_search, name='employees_search'),
     path('delete_employee/ <int:id>/', views.delete_employee, name='delete_employee'),
     path('update_employee/<int:id>', views.update_employee, name='update_employee'),
+
     path('profile', views.profile, name='profile'),
     path('holidays', views.holidays, name='holidays'),
+    path('holidays_delete/<int:id>', views.holidays_delete, name='holidays_delete'),
+    path('update_holidays/<int:id>', views.update_holidays, name='update_holidays'),
 
 
 

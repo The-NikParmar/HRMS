@@ -323,4 +323,44 @@ def profile(request):
     return render(request,"profile.html")
 
 def holidays(request):
-    return render(request,"holidays.html")
+    holidays = Holidays.objects.all()
+    if request.POST:
+        print("===================")
+        holiday = Holidays.objects.create(
+            holiday_name = request.POST['holiday_name'],
+            holiday_date = datetime.strptime(request.POST['holiday_date'], '%d/%m/%Y').strftime('%Y-%m-%d'),
+        )
+        sweetify.success(request,"Holiday Add successfully.")
+        return redirect('holidays')
+    else:
+        return render(request,"holidays.html",{'holidays': holidays})
+    
+def holidays_delete(request,id):
+    holidays = get_object_or_404(Holidays, pk=id)
+    holidays.delete()
+    sweetify.success(request, "Holiday deleted successfully.")
+    return redirect('holidays')
+
+def update_holidays(request, id):
+
+    holiday = get_object_or_404(Holidays, pk=id)
+    if request.method == 'POST':
+        holiday_name = request.POST.get('holiday_name')
+        holiday_date_str = request.POST.get('holiday_date')
+        
+        try:
+            holiday_date = datetime.strptime(holiday_date_str, '%d/%m/%Y').strftime('%Y-%m-%d')
+        except ValueError:
+            sweetify.error(request, "Invalid date format. Please use dd/mm/yyyy.")
+            return redirect('holidays')  
+        
+        holiday.holiday_name = holiday_name
+        holiday.holiday_date = holiday_date
+        holiday.save()
+
+        sweetify.success(request, "Holiday updated successfully.")
+        return redirect('holidays')
+    
+    return render(request, 'holidays.html')
+        
+
