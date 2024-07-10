@@ -321,3 +321,6 @@ def designations_delete(request, id):
 
 def profile(request):
     return render(request,"profile.html")
+
+def holidays(request):
+    return render(request,"holidays.html")

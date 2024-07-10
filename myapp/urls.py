@@ -34,6 +34,7 @@ urlpatterns = [
     path('delete_employee/ <int:id>/', views.delete_employee, name='delete_employee'),
     path('update_employee/<int:id>', views.update_employee, name='update_employee'),
     path('profile', views.profile, name='profile'),
+    path('holidays', views.holidays, name='holidays'),
 
 
 
